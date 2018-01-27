@@ -1,18 +1,18 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
 	"golang.org/x/net/context"
+	"google.golang.org/appengine"
 	"google.golang.org/appengine/blobstore"
 	aefile "google.golang.org/appengine/file"
 	"google.golang.org/appengine/image"
-	"google.golang.org/appengine"
-	"encoding/json"
+	"net/http"
 )
 
 type payload struct {
-	Url string `json:"url"`
+	URL string `json:"url"`
 }
 
 type errorPayload struct {
@@ -31,7 +31,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 
 	w.Header().Set("Content-Type", "application/json")
-	p.Url, err = servingURL(ctx, path, 0, true)
+	p.URL, err = servingURL(ctx, path, 0, true)
 	if err != nil {
 		ep.Message = err.Error()
 		w.WriteHeader(http.StatusInternalServerError)
